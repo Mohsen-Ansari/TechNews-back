@@ -13,8 +13,8 @@ class NewsViewTestCase(TestCase):
         self.tag1 = Tag.objects.create(name='Tag 1')
         self.tag2 = Tag.objects.create(name='Tag 2')
 
-        self.reference1 = Reference.objects.create(title='Reference 1', author='test name one', date='2022-04-25')
-        self.reference2 = Reference.objects.create(title='Reference 2', author='test name two', date='2015-08-12')
+        self.reference1 = Reference.objects.create(name='Reference 1', author='test name one', date='2022-04-25')
+        self.reference2 = Reference.objects.create(name='Reference 2', author='test name two', date='2015-08-12')
 
         self.news1 = News.objects.create(title='News 1', content='Content 1')
         self.news1.tags.add(self.tag1, self.tag2)
