@@ -1,7 +1,5 @@
 # .gitlab-ci.yml
 
-image: ubuntu:20.04
-
 stages:
   - build
   - test
