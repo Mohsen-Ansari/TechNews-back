@@ -1,0 +1,17 @@
+# .gitlab-ci.yml
+
+image: python:3.10
+
+stages:
+  - test
+
+variables:
+  DJANGO_SETTINGS_MODULE: "TechNews_back.settings"
+
+before_script:
+  - pip install -r requirements.txt
+
+test:
+  stage: test
+  script:
+    - python manage.py test
