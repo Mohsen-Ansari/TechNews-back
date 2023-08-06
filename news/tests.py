@@ -1,4 +1,5 @@
 from django.test import TestCase
+from django.urls import reverse
 from rest_framework.test import APIClient
 from rest_framework import status
 from .models import News, Reference, Tag
@@ -28,3 +29,26 @@ class NewsViewTestCase(TestCase):
         response = self.client.get('/api/news/get/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 2)
+
+    def test_filter_by_tags(self):
+        # Test filtering news by tags using URL parameters
+        response = self.client.get('/api/news/get/', {'tags': f"{self.tag2.name}"})  # tag2 only exist in news1
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        # Check if the response contains the correct number of news items
+        self.assertEqual(len(response.data), 1)
+
+        # Check if the returned news item has the correct tags
+        self.assertEqual(len(response.data[0]['tags']), 2)
+        self.assertIn(self.tag1.name, response.data[0]['tags'])
+        self.assertIn(self.tag2.name, response.data[0]['tags'])
+
+    def test_filter_by_tags_no_results(self):
+        # Test filtering news by tags that have no matches
+        response = self.client.get('/api/news/get/', {'tags': f"{self.tag1.name + 'asd'}"})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        # Check if the response is empty since there should be no matches
+        self.assertEqual(len(response.data), 0)
